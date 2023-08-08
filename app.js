@@ -15,4 +15,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let previousDisplay = document.querySelector(".previous");
   let currentDisplay = document.querySelector(".current");
   currentDisplay.textContent = currentValue;
+
+  function add(a, b) {
+    return a + b;
+  }
+
+  function subtract(a, b) {
+    return a - b;
+  }
+
+  function multiply(a, b) {
+    return a * b;
+  }
+
+  function divide(a, b) {
+    if (b === 0) {
+      return NaN;
+    }
+    return a / b;
+  }
 });
