@@ -1,6 +1,6 @@
 let operator = "";
 let previousValue = "";
-let currentValue = "";
+let currentValue = "0";
 
 document.addEventListener("DOMContentLoaded", function () {
   let clearBtn = document.querySelector(".clear");
