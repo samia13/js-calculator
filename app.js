@@ -34,4 +34,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     return a / b;
   }
+
+  // clear button click & plus/minus button click
+  clearBtn.addEventListener("click", function () {
+    operatorsList.forEach((op) => op.classList.remove("disabled"));
+    currentValue = "";
+    previousValue = "";
+    operator = "";
+    currentDisplay.textContent = 0;
+    previousDisplay.textContent = "";
+  });
+
+  plusMinusBtn.addEventListener("click", function () {
+    currentValue = -currentValue;
+    currentDisplay.textContent = currentValue;
+  });
 });
