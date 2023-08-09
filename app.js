@@ -50,3 +50,16 @@ document.addEventListener("DOMContentLoaded", function () {
     currentDisplay.textContent = currentValue;
   });
 });
+
+//decimal sign
+
+decimalSymbol.addEventListener("click", handleDecimal);
+  function handleDecimal() {
+    if (!currentValue.includes(".")) {
+      currentValue += ".";
+    }
+  }
+  deleteBtn.addEventListener("click", function () {
+    currentValue = currentValue.slice(-1);
+    currentDisplay.textContent = currentValue || "0";
+  });
