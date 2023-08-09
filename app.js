@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let historyDiv = document.querySelector(".history");
   let clearBtn = document.querySelector(".clear");
   let equalBtn = document.querySelector(".equal");
   let decimalSymbol = document.querySelector(".decimal");
@@ -23,6 +22,25 @@ document.addEventListener("DOMContentLoaded", function () {
   let operationsHistory = [];
 
   currentDisplay.textContent = currentValue;
+
+  function add(a, b) {
+    return a + b;
+  }
+
+  function subtract(a, b) {
+    return a - b;
+  }
+
+  function multiply(a, b) {
+    return a * b;
+  }
+
+  function divide(a, b) {
+    if (b === 0) {
+      return NaN;
+    }
+    return a / b;
+  }
 
   //   handle numbers click event
   function handleNumber(number) {
@@ -55,36 +73,26 @@ document.addEventListener("DOMContentLoaded", function () {
     op.addEventListener("click", () => handleOperator(op.textContent))
   );
 
-  function add(a, b) {
-    return a + b;
-  }
-
-  function subtract(a, b) {
-    return a - b;
-  }
-
-  function multiply(a, b) {
-    return a * b;
-  }
-
-  function divide(a, b) {
-    if (b === 0) {
-      return NaN;
+  // decimal & delete btn
+  decimalSymbol.addEventListener("click", handleDecimal);
+  function handleDecimal() {
+    if (!currentValue.includes(".")) {
+      currentValue += ".";
     }
-    return a / b;
+    currentDisplay.textContent = currentValue;
   }
+  deleteBtn.addEventListener("click", function () {
+    if (currentValue) {
+      currentValue = currentValue.slice(0, -1);
+      currentDisplay.textContent = currentValue || "0";
+    }
+  });
 
   // handle Clear btn click & plus/minus btn click
   clearBtn.addEventListener("click", function () {
     disableOperators(false);
     resetValues();
   });
-
-  function disableOperators(disabled) {
-    operatorsList.forEach((op) =>
-      disabled ? op.classList.add("disabled") : op.classList.remove("disabled")
-    );
-  }
 
   function resetValues() {
     currentValue = "";
@@ -101,20 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // decimal & delete btn
-  decimalSymbol.addEventListener("click", handleDecimal);
-  function handleDecimal() {
-    if (!currentValue.includes(".")) {
-      currentValue += ".";
-    }
-    currentDisplay.textContent = currentValue;
-  }
-  deleteBtn.addEventListener("click", function () {
-    if (currentValue) {
-      currentValue = currentValue.slice(0, -1);
-      currentDisplay.textContent = currentValue || "0";
-    }
-  });
   // handle x% button
   percentBtn.addEventListener("click", function () {
     if (currentValue && previousValue) {
@@ -180,4 +174,27 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   equalBtn.addEventListener("click", calculate);
+
+  function disableOperators(disabled) {
+    operatorsList.forEach((op) =>
+      disabled ? op.classList.add("disabled") : op.classList.remove("disabled")
+    );
+  }
+  // Keyboard support
+  document.addEventListener("keydown", (event) => {
+    const key = event.key;
+    document.querySelector(`[value="${key}"]`).classList.add("hovered");
+    if (/[\+\-\*\/]/.test(key)) {
+      handleOperator(key);
+    } else if (/[\d]/.test(key)) {
+      handleNumber(key);
+    } else if (key === "Enter") {
+      calculate();
+    } else if (key === "Escape") {
+      resetValues();
+    }
+  });
+  document.addEventListener("keyup", ({ key }) => {
+    document.querySelector(`[value="${key}"]`).classList.remove("hovered");
+  });
 });

@@ -81,7 +81,8 @@ body {
   box-shadow: 4px 3px 2px 0px #362c1d8c, -1px -1px 0px 1px #c79e1b3d,
     rgb(0 0 0 / 9%) 1px 7px 6px 1px inset;
 }
-.light-yellow:hover {
+.light-yellow:hover,
+.light-yellow.hovered {
   background-color: #443e34;
 }
 .yellow {
@@ -90,7 +91,8 @@ body {
   box-shadow: 4px 3px 2px 0px #362c1d8c, -1px -1px 0px 1px #c79e1b3d,
     rgb(0 0 0 / 9%) 1px 7px 6px 1px inset;
 }
-.yellow:hover {
+.yellow:hover,
+.yellow.hovered {
   background-color: #f8a806;
 }
 .light-purple {
@@ -99,7 +101,8 @@ body {
   box-shadow: 2px 2px 2px 0px #1c1c1c78, inset 1px 1px 0px 1px #ffffff17,
     rgb(0 0 0 / 9%) 1px 7px 6px 1px inset;
 }
-.light-purple:hover {
+.light-purple:hover,
+.light-purple.hovered {
   background-color: #462862;
 }
 .operator {
@@ -113,7 +116,8 @@ body {
   box-shadow: 4px 5px 2px 0px #1c1c1c78, inset 1px 1px 0px 1px #ffffff1c,
     rgb(0 0 0 / 9%) 1px 7px 6px 1px inset;
 }
-.purple:hover {
+.purple:hover,
+.purple.hovered {
   background-color: #9026d9;
 }
 
@@ -130,7 +134,8 @@ body {
 }
 
 .regular:hover,
-.decimal:hover {
+.decimal:hover,
+.regular.hovered {
   background-color: #2c2e30;
 }
 .equal {
