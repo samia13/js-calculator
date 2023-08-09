@@ -192,6 +192,8 @@ document.addEventListener("DOMContentLoaded", function () {
       calculate();
     } else if (key === "Escape") {
       resetValues();
+    } else if (key === ".") {
+      handleDecimal();
     }
   });
   document.addEventListener("keyup", ({ key }) => {
