@@ -14,7 +14,37 @@ document.addEventListener("DOMContentLoaded", function () {
   let operatorsList = document.querySelectorAll(".operator");
   let previousDisplay = document.querySelector(".previous");
   let currentDisplay = document.querySelector(".current");
+
+
+  //  handle numbers click event 
+  numbersList.forEach((number) => number.addEventListener("click", function(e) {
+      handleNumber(e.target.textContent);
+      currentDisplay.textContent = currentValue;
+    })
+  );
+
   currentDisplay.textContent = currentValue;
+
+  function handleNumber(num) {
+    currentValue += num; 
+  }
+
+  //  handle operators click event
+  function handleOperator(op) { 
+    if (previousValue || currentValue) { 
+      operator = op; 
+      previousValue = currentValue; 
+      currentValue = ""; 
+    } 
+  } 
+
+  operatorsList.forEach((op) => 
+  op.addEventListener("click", function (e) { 
+    handleOperator(e.target.textContent); 
+    previousDisplay.textContent = previousValue + " " + operator; 
+    currentDisplay.textContent = currentValue; 
+  }) 
+);
 
   function add(a, b) {
     return a + b;
