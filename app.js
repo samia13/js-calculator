@@ -112,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // handle x% button
   percentBtn.addEventListener("click", function () {
     if (currentValue && previousValue) {
-      currentValue = ((Number(currentValue) / 100) * previousValue).toFixed(2);
+      currentValue = Number(currentValue) / 100;
       currentDisplay.textContent = currentValue;
     }
   });
