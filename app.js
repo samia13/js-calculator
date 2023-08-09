@@ -1,8 +1,5 @@
-let operator = "";
-let previousValue = "";
-let currentValue = "0";
-
 document.addEventListener("DOMContentLoaded", function () {
+  let historyDiv = document.querySelector(".history");
   let clearBtn = document.querySelector(".clear");
   let equalBtn = document.querySelector(".equal");
   let decimalSymbol = document.querySelector(".decimal");
@@ -10,41 +7,53 @@ document.addEventListener("DOMContentLoaded", function () {
   let deleteBtn = document.querySelector(".delete");
 
   let numbersList = document.querySelectorAll(".number");
-
   let operatorsList = document.querySelectorAll(".operator");
+
   let previousDisplay = document.querySelector(".previous");
   let currentDisplay = document.querySelector(".current");
 
+  let percentBtn = document.querySelector(".percentBtn");
+  let sqrtBtn = document.querySelector(".sqrtBtn");
+  let powBtn = document.querySelector(".powBtn");
+  let fractionBtn = document.querySelector(".fractionBtn");
 
-  //  handle numbers click event 
-  numbersList.forEach((number) => number.addEventListener("click", function(e) {
-      handleNumber(e.target.textContent);
-      currentDisplay.textContent = currentValue;
-    })
-  );
+  let operator = "";
+  let previousValue = "";
+  let currentValue = "";
+  let operationsHistory = [];
 
   currentDisplay.textContent = currentValue;
 
-  function handleNumber(num) {
-    currentValue += num; 
+  //   handle numbers click event
+  function handleNumber(number) {
+    currentValue += number;
+    currentDisplay.textContent = currentValue;
   }
 
-  //  handle operators click event
-  function handleOperator(op) { 
-    if (previousValue || currentValue) { 
-      operator = op; 
-      previousValue = currentValue; 
-      currentValue = ""; 
-    } 
-  } 
+  numbersList.forEach((number) =>
+    number.addEventListener("click", () => handleNumber(number.textContent))
+  );
 
-  operatorsList.forEach((op) => 
-  op.addEventListener("click", function (e) { 
-    handleOperator(e.target.textContent); 
-    previousDisplay.textContent = previousValue + " " + operator; 
-    currentDisplay.textContent = currentValue; 
-  }) 
-);
+  // handle operators click event
+  function handleOperator(op) {
+    if (previousValue && currentValue) {
+      calculate();
+    }
+    if (currentValue) {
+      operator = op;
+      previousValue = currentValue;
+      currentValue = "";
+    } else if (previousValue) {
+      operator = op;
+    }
+    // populate screen
+    previousDisplay.textContent = previousValue + " " + operator;
+    currentDisplay.textContent = currentValue;
+  }
+
+  operatorsList.forEach((op) =>
+    op.addEventListener("click", () => handleOperator(op.textContent))
+  );
 
   function add(a, b) {
     return a + b;
@@ -65,69 +74,110 @@ document.addEventListener("DOMContentLoaded", function () {
     return a / b;
   }
 
-  // clear button click & plus/minus button click
+  // handle Clear btn click & plus/minus btn click
   clearBtn.addEventListener("click", function () {
-    operatorsList.forEach((op) => op.classList.remove("disabled"));
+    disableOperators(false);
+    resetValues();
+  });
+
+  function disableOperators(disabled) {
+    operatorsList.forEach((op) =>
+      disabled ? op.classList.add("disabled") : op.classList.remove("disabled")
+    );
+  }
+
+  function resetValues() {
     currentValue = "";
     previousValue = "";
     operator = "";
     currentDisplay.textContent = 0;
     previousDisplay.textContent = "";
-  });
+  }
 
   plusMinusBtn.addEventListener("click", function () {
-    currentValue = -currentValue;
-    currentDisplay.textContent = currentValue;
+    if (currentValue) {
+      currentValue = -currentValue;
+      currentDisplay.textContent = currentValue;
+    }
   });
 
-  //decimal sign + delete btn
+  // decimal & delete btn
   decimalSymbol.addEventListener("click", handleDecimal);
   function handleDecimal() {
     if (!currentValue.includes(".")) {
       currentValue += ".";
     }
+    currentDisplay.textContent = currentValue;
   }
   deleteBtn.addEventListener("click", function () {
-    currentValue = currentValue.slice(-1);
-    currentDisplay.textContent = currentValue || "0";
+    if (currentValue) {
+      currentValue = currentValue.slice(0, -1);
+      currentDisplay.textContent = currentValue || "0";
+    }
   });
-
+  // handle x% button
+  percentBtn.addEventListener("click", function () {
+    if (currentValue && previousValue) {
+      currentValue = ((Number(currentValue) / 100) * previousValue).toFixed(2);
+      currentDisplay.textContent = currentValue;
+    }
+  });
+  //  handle sqrt(x) button
+  sqrtBtn.addEventListener("click", function () {
+    if (currentValue) {
+      currentValue = Math.sqrt(+currentValue);
+      currentDisplay.textContent = currentValue;
+    }
+  });
+  // handle sqr(x) button
+  powBtn.addEventListener("click", function () {
+    if (currentValue) {
+      currentValue = Math.pow(+currentValue, 2);
+      currentDisplay.textContent = currentValue;
+    }
+  });
+  // handle 1/x button
+  fractionBtn.addEventListener("click", function () {
+    if (currentValue) {
+      currentValue = 1 / +currentValue;
+      currentDisplay.textContent = currentValue;
+    }
+  });
   // handle Equal button click
   function calculate() {
-    previousValue = Number(previousValue);
-    currentValue = Number(currentValue);
+    if (previousValue !== "" && currentValue !== "") {
+      previousValue = Number(previousValue);
+      currentValue = Number(currentValue);
 
-    switch (operator) {
-      case "+":
-        result = add(previousValue, currentValue);
-        break;
-      case "-":
-        result = subtract(previousValue, currentValue);
-        break;
-      case "*":
-        result = multiply(previousValue, currentValue);
-        break;
-      case "/":
-        result = divide(previousValue, currentValue);
-        break;
-      default:
-        alert(`Invalid Operator ${operator}`);
-        return false;
-    }
-    if (isNaN(result)) {
-      operatorsList.forEach((op) => op.classList.add("disabled"));
-      previousValue = "Cannot divide by 0";
-      currentValue = "";
-    } else {
-      previousValue = result.toString();
-      currentValue = previousValue;
+      switch (operator) {
+        case "+":
+          result = add(previousValue, currentValue);
+          break;
+        case "-":
+          result = subtract(previousValue, currentValue);
+          break;
+        case "*":
+          result = multiply(previousValue, currentValue);
+          break;
+        case "/":
+          result = divide(previousValue, currentValue);
+          break;
+        default:
+          alert(`Invalid Operator ${operator}`);
+          return false;
+      }
+      if (isNaN(result)) {
+        disableOperators(true);
+        previousValue = "Cannot divide by 0";
+        currentValue = "";
+      } else {
+        previousDisplay.textContent = `${previousValue} ${operator} ${currentValue}`;
+        currentDisplay.textContent = result.toString();
+        previousValue = result.toString();
+        currentValue = "";
+        operator = "";
+      }
     }
   }
-  equalBtn.addEventListener("click", function () {
-    if (previousValue !== "" && currentValue !== "") {
-      calculate();
-      previousDisplay.textContent = "";
-      currentDisplay.textContent = previousValue;
-    }
-  });
+  equalBtn.addEventListener("click", calculate);
 });

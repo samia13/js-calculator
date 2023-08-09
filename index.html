@@ -14,37 +14,41 @@
           <div class="previous"></div>
           <div class="current"></div>
         </div>
-
-        <!-- Buttons -->
       </div>
       <div class="btn-grid">
-        <button class="btn clear yellow font-bold">C</button>
-        <button class="btn light-yellow">%</button>
+        <button value="Escape" class="btn clear yellow font-bold">C</button>
+        <button class="btn light-yellow percentBtn">%</button>
         <button class="btn delete light-yellow">DEL</button>
-        <button class="btn operator light-purple">/</button>
+        <button value="/" class="btn operator light-purple">/</button>
 
-        <button class="btn light-yellow">1/x</button>
-        <button class="btn light-yellow">√x</button>
-        <button class="btn light-yellow">x²</button>
-        <button class="btn operator light-purple">*</button>
+        <button class="btn light-yellow fractionBtn">1/x</button>
+        <button class="btn light-yellow sqrtBtn">√x</button>
+        <button class="btn light-yellow powBtn">x²</button>
+        <button value="*" class="btn operator light-purple">*</button>
 
-        <button class="btn number regular">7</button>
-        <button class="btn number regular">8</button>
-        <button class="btn number regular">9</button>
-        <button class="btn operator light-purple">-</button>
+        <button value="7" class="btn number regular">7</button>
+        <button value="8" class="btn number regular">8</button>
+        <button value="9" class="btn number regular">9</button>
+        <button value="-" class="btn operator light-purple">-</button>
 
-        <button class="btn number regular">4</button>
-        <button class="btn number regular">5</button>
-        <button class="btn number regular">6</button>
-        <button class="btn operator light-purple">+</button>
+        <button value="4" class="btn number regular">4</button>
+        <button value="5" class="btn number regular">5</button>
+        <button value="6" class="btn number regular">6</button>
+        <button value="+" class="btn operator light-purple">+</button>
 
-        <button class="btn number regular">1</button>
-        <button class="btn number regular">2</button>
-        <button class="btn number regular">3</button>
-        <button class="btn equal purple font-bold">=</button>
+        <button value="1" class="btn number regular">1</button>
+        <button value="2" class="btn number regular">2</button>
+        <button value="3" class="btn number regular">3</button>
+        <button
+          value="Enter"
+          class="btn equal purple font-bold"
+          style="grid-row: span 2; height: auto"
+        >
+          =
+        </button>
         <button class="btn regular plus-minus">+/-</button>
-        <button class="btn number regular">0</button>
-        <button class="btn decimal">.</button>
+        <button value="0" class="btn number regular">0</button>
+        <button value="." class="btn decimal">.</button>
       </div>
     </div>
     <script src="app.js"></script>
