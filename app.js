@@ -49,11 +49,9 @@ document.addEventListener("DOMContentLoaded", function () {
     currentValue = -currentValue;
     currentDisplay.textContent = currentValue;
   });
-});
 
-//decimal sign
-
-decimalSymbol.addEventListener("click", handleDecimal);
+  //decimal sign + delete btn
+  decimalSymbol.addEventListener("click", handleDecimal);
   function handleDecimal() {
     if (!currentValue.includes(".")) {
       currentValue += ".";
@@ -63,3 +61,43 @@ decimalSymbol.addEventListener("click", handleDecimal);
     currentValue = currentValue.slice(-1);
     currentDisplay.textContent = currentValue || "0";
   });
+
+  // handle Equal button click
+  function calculate() {
+    previousValue = Number(previousValue);
+    currentValue = Number(currentValue);
+
+    switch (operator) {
+      case "+":
+        result = add(previousValue, currentValue);
+        break;
+      case "-":
+        result = subtract(previousValue, currentValue);
+        break;
+      case "*":
+        result = multiply(previousValue, currentValue);
+        break;
+      case "/":
+        result = divide(previousValue, currentValue);
+        break;
+      default:
+        alert(`Invalid Operator ${operator}`);
+        return false;
+    }
+    if (isNaN(result)) {
+      operatorsList.forEach((op) => op.classList.add("disabled"));
+      previousValue = "Cannot divide by 0";
+      currentValue = "";
+    } else {
+      previousValue = result.toString();
+      currentValue = previousValue;
+    }
+  }
+  equalBtn.addEventListener("click", function () {
+    if (previousValue !== "" && currentValue !== "") {
+      calculate();
+      previousDisplay.textContent = "";
+      currentDisplay.textContent = previousValue;
+    }
+  });
+});
