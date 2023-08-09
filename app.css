@@ -135,6 +135,7 @@ body {
 
 .regular:hover,
 .decimal:hover,
+.decimal.hovered,
 .regular.hovered {
   background-color: #2c2e30;
 }
