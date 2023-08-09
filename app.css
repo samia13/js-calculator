@@ -15,7 +15,7 @@ body {
   width: 100vw;
   height: 100vh;
   color: var(--text-color);
-  background: linear-gradient(171deg, #464a4b, black);
+  background: linear-gradient(171deg, #cde8ef, #e2dbdb);
   margin: 0;
 }
 .calculator {
@@ -60,6 +60,7 @@ body {
   border-radius: 29px;
   color: var(--text-color);
   cursor: pointer;
+  outline: 0;
 }
 .disabled {
   pointer-events: none;
@@ -101,6 +102,11 @@ body {
 .light-purple:hover {
   background-color: #462862;
 }
+.operator {
+  color: #ce97f9;
+  font-weight: 800;
+  font-size: 23px;
+}
 .purple {
   background: var(--purple-color);
   color: white;
@@ -118,7 +124,7 @@ body {
 .regular,
 .decimal {
   background: var(--btn-color);
-  color: #9d9d9d;
+  color: #c4c4c4;
   box-shadow: 2px 2px 2px 0px #1c1c1c78, inset 1px 1px 0px 1px #ffffff17,
     rgb(0 0 0 / 9%) 1px 7px 6px 1px inset;
 }
