@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
   //   handle numbers click event
   function handleNumber(number) {
     currentValue += number;
-    currentDisplay.textContent = currentValue;
+    updateScreen();
   }
 
   numbersList.forEach((number) =>
@@ -64,9 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     } else if (previousValue) {
       operator = op;
     }
-    // populate screen
-    previousDisplay.textContent = previousValue + " " + operator;
-    currentDisplay.textContent = currentValue;
+    updateScreen(`${previousValue} ${operator}`);
   }
 
   operatorsList.forEach((op) =>
@@ -79,12 +77,12 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!currentValue.includes(".")) {
       currentValue += ".";
     }
-    currentDisplay.textContent = currentValue;
+    updateScreen();
   }
   deleteBtn.addEventListener("click", function () {
     if (currentValue) {
       currentValue = currentValue.slice(0, -1);
-      currentDisplay.textContent = currentValue || "0";
+      updateScreen("", currentValue || "0");
     }
   });
 
@@ -105,7 +103,7 @@ document.addEventListener("DOMContentLoaded", function () {
   plusMinusBtn.addEventListener("click", function () {
     if (currentValue) {
       currentValue = -currentValue;
-      currentDisplay.textContent = currentValue;
+      updateScreen();
     }
   });
 
@@ -113,28 +111,28 @@ document.addEventListener("DOMContentLoaded", function () {
   percentBtn.addEventListener("click", function () {
     if (currentValue && previousValue) {
       currentValue = Number(currentValue) / 100;
-      currentDisplay.textContent = currentValue;
+      updateScreen();
     }
   });
   //  handle sqrt(x) button
   sqrtBtn.addEventListener("click", function () {
     if (currentValue) {
       currentValue = Math.sqrt(+currentValue);
-      currentDisplay.textContent = currentValue;
+      updateScreen();
     }
   });
   // handle sqr(x) button
   powBtn.addEventListener("click", function () {
     if (currentValue) {
       currentValue = Math.pow(+currentValue, 2);
-      currentDisplay.textContent = currentValue;
+      updateScreen();
     }
   });
   // handle 1/x button
   fractionBtn.addEventListener("click", function () {
     if (currentValue) {
       currentValue = 1 / +currentValue;
-      currentDisplay.textContent = currentValue;
+      updateScreen();
     }
   });
   // handle Equal button click
@@ -164,9 +162,12 @@ document.addEventListener("DOMContentLoaded", function () {
         disableOperators(true);
         previousValue = "Cannot divide by 0";
         currentValue = "";
+        updateScreen(previousValue);
       } else {
-        previousDisplay.textContent = `${previousValue} ${operator} ${currentValue}`;
-        currentDisplay.textContent = result.toString();
+        updateScreen(
+          `${previousValue} ${operator} ${currentValue}`,
+          result.toString()
+        );
         previousValue = result.toString();
         currentValue = "";
         operator = "";
@@ -174,6 +175,12 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
   equalBtn.addEventListener("click", calculate);
+
+  // update display
+  function updateScreen(previous, current) {
+    if (previous) previousDisplay.textContent = previous;
+    currentDisplay.textContent = current || currentValue;
+  }
 
   function disableOperators(disabled) {
     operatorsList.forEach((op) =>
@@ -183,7 +190,8 @@ document.addEventListener("DOMContentLoaded", function () {
   // Keyboard support
   document.addEventListener("keydown", (event) => {
     const key = event.key;
-    document.querySelector(`[value="${key}"]`).classList.add("hovered");
+    /[\d\+\-\*\/.]/.test(key) &&
+      document.querySelector(`[value="${key}"]`).classList.add("hovered");
     if (/[\+\-\*\/]/.test(key)) {
       handleOperator(key);
     } else if (/[\d]/.test(key)) {
@@ -197,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
   document.addEventListener("keyup", ({ key }) => {
-    document.querySelector(`[value="${key}"]`).classList.remove("hovered");
+    /[\d\+\-\*\/.]/.test(key) &&
+      document.querySelector(`[value="${key}"]`).classList.remove("hovered");
   });
 });
