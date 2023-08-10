@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
+  let historyDiv = document.querySelector(".history");
+  let operationsList = document.querySelector(".history ul");
+
   let clearBtn = document.querySelector(".clear");
   let equalBtn = document.querySelector(".equal");
   let decimalSymbol = document.querySelector(".decimal");
@@ -19,7 +22,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let operator = "";
   let previousValue = "";
   let currentValue = "";
-  let operationsHistory = [];
 
   currentDisplay.textContent = currentValue;
 
@@ -54,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // handle operators click event
   function handleOperator(op) {
-    if (previousValue && currentValue) {
+    if (previousValue && currentValue && operator) {
       calculate();
     }
     if (currentValue) {
@@ -165,6 +167,12 @@ document.addEventListener("DOMContentLoaded", function () {
         updateScreen(previousValue);
       } else {
         let roundedNumber = roundNumber(result);
+        saveSingleOperation(
+          previousValue,
+          operator,
+          currentValue,
+          roundedNumber
+        );
         updateScreen(
           `${previousValue} ${operator} ${currentValue}`,
           roundedNumber.toString()
@@ -205,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
       handleOperator(key);
     } else if (/[\d]/.test(key)) {
       handleNumber(key);
-    } else if (key === "Enter" || code === 13) {
+    } else if (key === "Enter" || code == 13) {
       calculate();
     } else if (key === "Escape") {
       resetValues();
@@ -217,4 +225,30 @@ document.addEventListener("DOMContentLoaded", function () {
     /[\d\+\-\*\/.]/.test(key) &&
       document.querySelector(`[value="${key}"]`).classList.remove("hovered");
   });
+
+  // save operation in history div
+  function saveSingleOperation(num1, op, num2, result) {
+    const li = document.createElement("li");
+    li.innerHTML = `${num1} ${op} ${num2} =<br/> <strong> ${result}</strong>`;
+    li.addEventListener("click", () => handleListClick(num1, op, result, num2));
+    operationsList.append(li);
+  }
+
+  function handleListClick(num1, op, result, num2) {
+    previousDisplay.textContent = num1 + " " + op + " " + num2;
+    currentDisplay.textContent = result;
+    previousValue = result;
+    toggleHistory();
+  }
+
+  let toggleHistorybtn = document.querySelector(".toggleHistory i");
+  toggleHistorybtn.addEventListener("click", toggleHistory);
+
+  function toggleHistory() {
+    let numberOfLiElements = operationsList.querySelectorAll("li").length;
+    if (numberOfLiElements)
+      document.querySelector(".emptyList").style.display = "none";
+
+    historyDiv.classList.toggle("open");
+  }
 });
