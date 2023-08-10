@@ -117,21 +117,21 @@ document.addEventListener("DOMContentLoaded", function () {
   //  handle sqrt(x) button
   sqrtBtn.addEventListener("click", function () {
     if (currentValue) {
-      currentValue = Math.sqrt(+currentValue);
+      currentValue = roundNumber(Math.sqrt(+currentValue));
       updateScreen();
     }
   });
   // handle sqr(x) button
   powBtn.addEventListener("click", function () {
     if (currentValue) {
-      currentValue = Math.pow(+currentValue, 2);
+      currentValue = roundNumber(Math.pow(+currentValue, 2));
       updateScreen();
     }
   });
   // handle 1/x button
   fractionBtn.addEventListener("click", function () {
     if (currentValue) {
-      currentValue = 1 / +currentValue;
+      currentValue = roundNumber(1 / +currentValue);
       updateScreen();
     }
   });
@@ -164,17 +164,25 @@ document.addEventListener("DOMContentLoaded", function () {
         currentValue = "";
         updateScreen(previousValue);
       } else {
+        let roundedNumber = roundNumber(result);
         updateScreen(
           `${previousValue} ${operator} ${currentValue}`,
-          result.toString()
+          roundedNumber.toString()
         );
-        previousValue = result.toString();
+        previousValue = roundedNumber.toString();
         currentValue = "";
         operator = "";
       }
     }
   }
   equalBtn.addEventListener("click", calculate);
+
+  function roundNumber(number) {
+    if (+number % 1 !== 0) {
+      return parseFloat(number.toFixed(4));
+    }
+    return number;
+  }
 
   // update display
   function updateScreen(previous, current) {
@@ -190,13 +198,14 @@ document.addEventListener("DOMContentLoaded", function () {
   // Keyboard support
   document.addEventListener("keydown", (event) => {
     const key = event.key;
+    const code = event.which;
     /[\d\+\-\*\/.]/.test(key) &&
       document.querySelector(`[value="${key}"]`).classList.add("hovered");
     if (/[\+\-\*\/]/.test(key)) {
       handleOperator(key);
     } else if (/[\d]/.test(key)) {
       handleNumber(key);
-    } else if (key === "Enter") {
+    } else if (key === "Enter" || code === 13) {
       calculate();
     } else if (key === "Escape") {
       resetValues();
