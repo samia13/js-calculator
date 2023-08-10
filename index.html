@@ -4,10 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Calculator Project</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.9.0/css/all.min.css"
+      integrity="sha512-q3eWabyZPc1XTCmF+8/LuE1ozpg5xxn7iO89yfSOd5/oKvyqLngoNGsx8jq92Y8eXJ/IRxQbEC+FGSYxtk2oiw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="app.css" />
   </head>
   <body>
     <div class="calculator">
+      <div class="toggleHistory"><i class="fas fa-history"></i></div>
+
       <div class="display">
         <!-- Display -->
         <div class="screen">
@@ -49,6 +58,10 @@
         <button class="btn regular plus-minus">+/-</button>
         <button value="0" class="btn number regular">0</button>
         <button value="." class="btn decimal">.</button>
+      </div>
+      <div class="history">
+        <p class="emptyList">No operations yet</p>
+        <ul></ul>
       </div>
     </div>
     <script src="app.js"></script>
