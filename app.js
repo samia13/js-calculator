@@ -205,6 +205,8 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // Keyboard support
   document.addEventListener("keydown", (event) => {
+    event.preventDefault();
+
     const key = event.key;
     const code = event.which;
     /[\d\+\-\*\/.]/.test(key) &&
