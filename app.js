@@ -46,8 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //   handle numbers click event
   function handleNumber(number) {
-    currentValue += number;
-    updateScreen();
+    if (currentValue.length < 7) {
+      currentValue += number;
+      updateScreen();
+    }
   }
 
   numbersList.forEach((number) =>
