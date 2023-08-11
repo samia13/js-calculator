@@ -207,17 +207,19 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   // Keyboard support
   document.addEventListener("keydown", (event) => {
-    event.preventDefault();
-
     const key = event.key;
-    const code = event.which;
-    /[\d\+\-\*\/.]/.test(key) &&
+
+    // add hover effect to clicked key
+    if (/[\d\+\-\*\/.]/.test(key)) {
       document.querySelector(`[value="${key}"]`).classList.add("hovered");
+    }
+
     if (/[\+\-\*\/]/.test(key)) {
       handleOperator(key);
     } else if (/[\d]/.test(key)) {
       handleNumber(key);
-    } else if (key === "Enter" || code == 13) {
+    } else if (key === "Enter" || key === "Return") {
+      event.preventDefault();
       calculate();
     } else if (key === "Escape") {
       resetValues();
@@ -226,8 +228,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
   document.addEventListener("keyup", ({ key }) => {
-    /[\d\+\-\*\/.]/.test(key) &&
+    if (/[\d\+\-\*\/.]/.test(key)) {
       document.querySelector(`[value="${key}"]`).classList.remove("hovered");
+    }
   });
 
   // save operation in history div
